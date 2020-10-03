@@ -58,3 +58,42 @@ class Klook(Website):
                     dict(title=title, link=link, price=price, booking_date=booking_date, star=star, source="KLOOK"))
 
         return result
+
+
+# KKday網站
+class Kkday(Website):
+
+    def scrape(self):
+
+        result = []  # 回傳結果
+
+        if self.city_name:  # 如果城市名稱非空值
+
+            # 取得傳入城市的所有一日遊票券
+            response = requests.get(
+                f"https://www.kkday.com/zh-tw/product/ajax_productlist/?keyword={self.city_name}&cat=TAG_4_4&sort=rdesc")
+
+            # 資料
+            activities = response.json()["data"]
+
+            for activity in activities:
+
+                # 票券名稱
+                title = activity["name"]
+
+                # 票券詳細內容連結
+                link = activity["url"]
+
+                # 票券價格
+                price = activity["price"]
+
+                # 最早可使用日期
+                booking_date = activity["earliest_sale_date"]
+
+                # 評價
+                star = activity["rating_star"]
+
+                result.append(
+                    dict(title=title, link=link, price=price, booking_date=booking_date, star=star, source="KKday"))
+
+        return result
