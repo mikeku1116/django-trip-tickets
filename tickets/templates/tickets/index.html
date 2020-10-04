@@ -1,0 +1,24 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>票券名稱</th>
+            <th>價格</th>
+            <th>最早可使用日期</th>
+            <th>評價</th>
+            <th>來源網站</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>
+                <a href="{{ ticket.link }}" target="_blank">{{ ticket.title }}</a>
+            </td>
+            <td>{{ ticket.price }}</td>
+            <td>{{ ticket.booking_date }}</td>
+            <td>{{ ticket.star }}</td>
+            <td>{{ ticket.source }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
