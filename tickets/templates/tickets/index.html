@@ -1,29 +1,41 @@
-<form action="" method="Post">
-    {% csrf_token %}
-    <input name="city_name" placeholder="請輸入城市名稱">
-    <input type="submit" value="查詢">
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>票券名稱</th>
-            <th>價格</th>
-            <th>最早可使用日期</th>
-            <th>評價</th>
-            <th>來源網站</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for ticket in tickets %}
-        <tr>
-            <td>
-                <a href="{{ ticket.link }}" target="_blank">{{ ticket.title }}</a>
-            </td>
-            <td>{{ ticket.price }}</td>
-            <td>{{ ticket.booking_date }}</td>
-            <td>{{ ticket.star }}</td>
-            <td><img src={{ ticket.source }} style="width:32px; heigh:32px;" /></td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form action="" method="Post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-11">
+                <input class="form-control" name="city_name" placeholder="請輸入城市名稱">
+            </div>
+            <div class="form-group col-1">
+                <input class="btn btn-dark" type="submit" value="查詢">
+            </div>
+        </div>
+    </form>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>票券名稱</th>
+                <th>價格</th>
+                <th>最早可使用日期</th>
+                <th>評價</th>
+                <th>來源網站</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>
+                    <a href="{{ ticket.link }}" target="_blank">{{ ticket.title }}</a>
+                </td>
+                <td>{{ ticket.price }}</td>
+                <td>{{ ticket.booking_date }}</td>
+                <td>{{ ticket.star }}</td>
+                <td><img src={{ ticket.source }} style="width:32px; heigh:32px;" /></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
