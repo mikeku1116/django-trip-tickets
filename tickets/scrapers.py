@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 import requests
+from datetime import datetime
 
 
 # 票券網站抽象類別
@@ -30,7 +31,7 @@ class Klook(Website):
 
             # 取得五個票券卡片(Card)元素
             activities = soup.find_all(
-                "div", {"class", "j_activity_item_link j_activity_item_click_action"}, limit=5)
+                "div", {"class", "j_activity_item_link j_activity_item_click_action"}, limit=10)
 
             for activity in activities:
 
@@ -48,14 +49,14 @@ class Klook(Website):
 
                 # 最早可使用日期
                 booking_date = activity.find(
-                    "span", {"class": "g_right j_card_date"}).get("data-serverdate")
+                    "span", {"class": "g_right j_card_date"}).get("data-serverdate")[0:10]
 
                 # 評價
-                star = activity.find(
-                    "span", {"class": "t14 star_score"}).getText().strip()
+                star = activity.find("span", {"class": "t14 star_score"}).getText(
+                ).strip() if activity.find("span", {"class": "t14 star_score"}) else "無"
 
                 result.append(
-                    dict(title=title, link=link, price=price, booking_date=booking_date, star=star, source="KLOOK"))
+                    dict(title=title, link=link, price=price, booking_date=booking_date, star=star, source="https://cdn.klook.com/s/dist_web/assert/desktop/imgs/favicon-098cf2db20.png"))
 
         return result
 
@@ -85,15 +86,17 @@ class Kkday(Website):
                 link = activity["url"]
 
                 # 票券價格
-                price = activity["price"]
+                price = f'NT$ {int(activity["price"]):,}'
 
                 # 最早可使用日期
-                booking_date = activity["earliest_sale_date"]
+                booking_date = datetime.strftime(datetime.strptime(
+                    activity["earliest_sale_date"], "%Y%m%d"), "%Y-%m-%d")
 
                 # 評價
-                star = activity["rating_star"]
+                star = str(activity["rating_star"])[
+                    0:3] if activity["rating_star"] else "無"
 
                 result.append(
-                    dict(title=title, link=link, price=price, booking_date=booking_date, star=star, source="KKday"))
+                    dict(title=title, link=link, price=price, booking_date=booking_date, star=star, source="https://cdn.kkday.com/m-web/assets/img/favicon.png"))
 
         return result
