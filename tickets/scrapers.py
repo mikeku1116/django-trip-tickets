@@ -26,10 +26,10 @@ class Klook(Website):
 
             # 取得傳入城市的所有一日遊&導賞團票券
             response = requests.get(
-                f"https://www.klook.com/zh-TW/search/?keyword={self.city_name}&template_id=2&start=1")
+                f"https://www.klook.com/zh-TW/search/?keyword={self.city_name}&template_id=2&sort=price&start=1")
             soup = BeautifulSoup(response.text, "lxml")
 
-            # 取得五個票券卡片(Card)元素
+            # 取得十個票券卡片(Card)元素
             activities = soup.find_all(
                 "div", {"class", "j_activity_item_link j_activity_item_click_action"}, limit=10)
 
@@ -72,7 +72,7 @@ class Kkday(Website):
 
             # 取得傳入城市的所有一日遊票券
             response = requests.get(
-                f"https://www.kkday.com/zh-tw/product/ajax_productlist/?keyword={self.city_name}&cat=TAG_4_4&sort=rdesc")
+                f"https://www.kkday.com/zh-tw/product/ajax_productlist/?keyword={self.city_name}&cat=TAG_4_4&sort=pasc")
 
             # 資料
             activities = response.json()["data"]
